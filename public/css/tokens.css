@@ -1,0 +1,56 @@
+:root {
+  color-scheme: dark;
+
+  /* ── Accent (DESIGN.md: primary / primary-on-dark) ── */
+  --color-action: #0066cc;            /* 채운 버튼 배경 (흰 글자 대비 5.6:1) */
+  --color-link: #2997ff;              /* 링크, 포커스 링, 선택 테두리, 재생 중 표시 */
+
+  /* ── Surface (어두운 순서: bg < tile-3 < field < tile-1 < tile-2) ── */
+  --color-bg: #000000;                /* 페이지 기본, 입력 타일 */
+  --color-tile-3: #252527;            /* 푸터 */
+  --color-field: #1d1d1f;             /* 입력창, 칩 배경 (DESIGN.md ink를 면으로 사용) */
+  --color-tile-1: #272729;            /* 결과 타일 */
+  --color-tile-2: #2a2a2c;            /* 미니 플레이어, 글자 표지 배경 */
+  --color-frosted: rgba(29, 29, 31, 0.72);   /* 서브내비·스티키 바·미니 플레이어 (ink 72%) */
+  --color-nav: rgba(0, 0, 0, 0.8);           /* 글로벌 내비 */
+
+  /* ── Text ── */
+  --color-text: #ffffff;              /* 기본 */
+  --color-text-2: #cccccc;            /* 보조 (DESIGN.md body-muted) */
+  --color-text-3: #7a7a7a;            /* 21px 이상 큰 글자 또는 장식 숫자에만 */
+
+  /* ── Lines (흰색 알파 파생) ── */
+  --color-line: rgba(255, 255, 255, 0.08);        /* 목록 구분선, 테두리 */
+  --color-line-strong: rgba(255, 255, 255, 0.16); /* 입력창·칩 테두리 */
+  --color-fill-subtle: rgba(255, 255, 255, 0.12); /* 분위기 태그, 아이콘 버튼 */
+  --color-fill-dim: rgba(255, 255, 255, 0.24);    /* 에너지 빈 칸 */
+  --color-scrim: rgba(0, 0, 0, 0.56);             /* 표지 위 재생 배지 배경 (유일한 이미지 위 요소) */
+
+  /* ── Typography ── */
+  --font-base: system-ui, -apple-system, BlinkMacSystemFont, "Pretendard Variable", Pretendard,
+               "Apple SD Gothic Neo", "Noto Sans KR", "Inter", sans-serif;
+
+  /* ── Radius ── */
+  --radius-sm: 8px;
+  --radius-md: 11px;
+  --radius-lg: 18px;
+  --radius-pill: 9999px;
+
+  /* ── Spacing ── */
+  --space-xxs: 4px;  --space-xs: 8px;   --space-sm: 12px;  --space-md: 17px;
+  --space-lg: 24px;  --space-xl: 32px;  --space-xxl: 48px; --space-section: 80px;
+
+  /* ── Layout ── */
+  --nav-height: 44px;
+  --subnav-height: 52px;
+  --stickybar-height: 64px;
+  --content-narrow: 980px;
+  --content-album: 720px;             /* 결과 화면 가운데 열 */
+  --cover-size: min(480px, 100%);
+
+  /* ── Motion / Effect ── */
+  --ease-standard: cubic-bezier(0.28, 0.11, 0.32, 1);
+  --duration-fast: 160ms;
+  --duration-base: 400ms;
+  --blur-frosted: saturate(180%) blur(20px);
+}

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#000000">
+  <title>Moodlist — 분위기 기반 플레이리스트</title>
+
+  <!-- Pretendard Variable 웹폰트 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+
+  <!-- 디자인 토큰 및 스타일시트 -->
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/components.css">
+</head>
+<body data-playback="none">
+  <!-- 글로벌 내비 (44px, fixed) -->
+  <header class="global-nav">
+    <div class="global-nav__inner">
+      <a href="/" class="global-nav__wordmark t-tagline">Moodlist</a>
+      <div class="global-nav__actions">
+        <button type="button" class="link t-body" id="history-btn">기록</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 서브 내비 (52px, sticky) -->
+  <nav class="sub-nav">
+    <div class="sub-nav__inner">
+      <span class="t-tagline">플레이리스트</span>
+      <button type="button" class="btn-primary t-body" id="new-playlist-btn">새로 만들기</button>
+    </div>
+  </nav>
+
+  <main data-state="idle" id="main-content" aria-live="polite">
+    <!-- 1. 입력 타일 (.tile--black) -->
+    <section class="tile tile--black" id="input-tile">
+      <div class="tile__container">
+        <h1 class="t-hero">지금, 어떤 음악이 필요하세요?</h1>
+        <p class="t-lead u-lead-sub">
+          분위기나 상황을 말하면 10곡을 골라 표지까지 만들어 드릴게요.
+        </p>
+
+        <form id="mood-form" class="input-group">
+          <label for="mood-input" class="sr-only">원하는 분위기 또는 상황</label>
+          <input type="text" id="mood-input" class="mood-input t-body" placeholder="예: 비 오는 밤에 혼자 드라이브할 때" maxlength="300" autocomplete="off">
+          <button type="submit" id="submit-btn" class="btn-primary t-body">추천받기</button>
+        </form>
+
+        <!-- 언어 선택 칩 -->
+        <div class="chip-row" role="radiogroup" aria-label="언어 선호">
+          <button type="button" class="chip t-caption" role="radio" aria-checked="true" data-lang="auto">자동(국내+해외)</button>
+          <button type="button" class="chip t-caption" role="radio" aria-checked="false" data-lang="ko">국내곡만</button>
+          <button type="button" class="chip t-caption" role="radio" aria-checked="false" data-lang="global">해외곡만</button>
+        </div>
+
+        <!-- 예시 칩 -->
+        <div class="chip-row" aria-label="예시 분위기">
+          <button type="button" class="chip t-caption" data-example="비 오는 밤 드라이브">비 오는 밤 드라이브</button>
+          <button type="button" class="chip t-caption" data-example="새벽 공부">새벽 공부</button>
+          <button type="button" class="chip t-caption" data-example="주말 오후 카페">주말 오후 카페</button>
+          <button type="button" class="chip t-caption" data-example="운동 전 텐션 업">운동 전 텐션 업</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 되묻기 섹션 (.tile--dark) -->
+    <section class="tile tile--dark" id="clarify-tile" hidden>
+      <div class="tile__container">
+        <p class="t-lead-airy" id="clarify-question">지금 어떤 기분인가요?</p>
+        <div class="input-group u-mt-24">
+          <input type="text" id="clarify-input" class="mood-input t-body" placeholder="답변을 입력해 주세요">
+          <button type="button" id="clarify-btn" class="btn-primary t-body">이어서 추천받기</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. 결과 타일 (.tile--dark) -->
+    <section class="tile tile--dark" id="result-tile" hidden>
+      <!-- render.js에 의해 렌더링됨 -->
+    </section>
+
+    <!-- 스켈레톤 로딩 타일 -->
+    <section class="tile tile--dark" id="loading-tile" hidden aria-busy="true">
+      <div class="tile__container">
+        <div class="skeleton skeleton-cover"></div>
+        <div class="skeleton skeleton-line skeleton-line--title"></div>
+        <div class="skeleton skeleton-line skeleton-line--sub"></div>
+        <p class="t-caption" id="loading-stage-text" class="u-text-2 u-mt-24">분위기를 읽는 중…</p>
+      </div>
+    </section>
+
+    <!-- 에러 타일 -->
+    <section class="tile tile--black" id="error-tile" hidden>
+      <div class="error-box">
+        <p class="t-body-strong">⚠️ <span id="error-message">잠시 연결이 원활하지 않아요. 다시 시도해 주세요.</span></p>
+        <button type="button" class="btn-secondary t-body" id="retry-btn">다시 시도</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- 미니 플레이어 (200x200 이상 영역 유지) -->
+  <aside class="mini-player" id="mini-player" role="region" aria-label="지금 재생" hidden>
+    <div class="mini-player__header">
+      <div class="mini-player__info">
+        <span class="t-caption" id="player-mode-label" class="u-text-2">지금 재생 · 01/10</span>
+        <span class="t-body-strong mini-player__track" id="player-track-label">밤편지 — 아이유</span>
+      </div>
+      <div class="mini-player__controls">
+        <button type="button" class="btn-icon" id="player-pause-btn" aria-label="일시정지">❚❚</button>
+        <button type="button" class="btn-icon" id="player-close-btn" aria-label="닫기">✕</button>
+      </div>
+    </div>
+    <div class="mini-player__frame" id="yt-player-container">
+      <div id="yt-player" class="mini-player__embed"></div>
+    </div>
+  </aside>
+
+  <!-- 기록 모달/드로어 -->
+  <dialog id="history-dialog" class="history-dialog">
+    <div class="history-dialog__header">
+      <h2 class="t-tagline">최근 플레이리스트</h2>
+      <button type="button" class="btn-icon" id="close-history-btn" aria-label="기록 닫기">✕</button>
+    </div>
+    <ul id="history-list" class="history-dialog__list">
+      <!-- storage.js를 통해 채워짐 -->
+    </ul>
+    <div class="history-dialog__footer">
+      <button type="button" class="btn-capsule t-caption" id="clear-history-btn">기록 삭제</button>
+    </div>
+  </dialog>
+
+  <!-- 하단 고정 스티키 바 -->
+  <footer class="sticky-bar" id="sticky-bar" hidden>
+    <div class="sticky-bar__inner">
+      <button type="button" class="chip t-caption" data-refine="더 신나게">더 신나게</button>
+      <button type="button" class="chip t-caption" data-refine="더 잔잔하게">더 잔잔하게</button>
+      <button type="button" class="chip t-caption" data-refine="K-POP만">K-POP만</button>
+      <button type="button" class="chip t-caption" data-refine="해외곡만">해외곡만</button>
+      <button type="button" class="chip t-caption" data-refine="다른 곡으로">다른 곡으로</button>
+      <input type="text" id="refine-custom-input" class="mood-input t-caption sticky-bar__input" placeholder="직접 수정 입력…">
+      <button type="button" id="refine-submit-btn" class="btn-primary t-caption sticky-bar__submit">다시 만들기</button>
+    </div>
+  </footer>
+
+  <!-- 푸터 -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <p class="t-fine">
+        영상과 썸네일은 YouTube에서 제공됩니다. 곡 추천과 표지는 AI가 만들어 일부 정보가 정확하지 않을 수 있어요.
+      </p>
+    </div>
+  </footer>
+
+  <!-- 메인 스크립트 모듈 -->
+  <script type="module" src="/js/main.js"></script>
+</body>
+</html>

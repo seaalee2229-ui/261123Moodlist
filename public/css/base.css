@@ -1,0 +1,151 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  color-scheme: dark;
+  background-color: var(--color-bg);
+  font-family: var(--font-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.55;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+/* 스크린 리더 전용 */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* 타이포그래피 유틸리티 클래스 */
+.t-hero {
+  font-size: 56px;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.t-display-lg {
+  font-size: 40px;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+}
+
+.t-display-md {
+  font-size: 34px;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+.t-lead {
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 1.3;
+  letter-spacing: 0;
+}
+
+.t-lead-airy {
+  font-size: 24px;
+  font-weight: 300;
+  line-height: 1.5;
+  letter-spacing: 0;
+}
+
+.t-tagline {
+  font-size: 21px;
+  font-weight: 600;
+  line-height: 1.19;
+  letter-spacing: 0;
+}
+
+.t-body-strong {
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+}
+
+.t-body {
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.55;
+  letter-spacing: -0.01em;
+}
+
+.t-caption {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+}
+
+.t-caption-strong {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+}
+
+.t-fine {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: 0;
+}
+
+/* 링크 스타일 */
+.link {
+  color: var(--color-link);
+  text-decoration: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  transition: opacity var(--duration-fast) var(--ease-standard);
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+/* 포커스 및 상호작용 공통 */
+:focus-visible {
+  outline: 2px solid var(--color-link);
+  outline-offset: 2px;
+}
+
+button {
+  font-family: inherit;
+  color: inherit;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
