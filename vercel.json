@@ -1,16 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "outputDirectory": "public",
-  "functions": {
-    "api/index.js": {
-      "includeFiles": "prompts/**",
-      "maxDuration": 300
-    }
-  },
-  "rewrites": [
-    { "source": "/api/:path*", "destination": "/api" },
-    { "source": "/covers/:path*", "destination": "/api" }
-  ],
   "headers": [
     {
       "source": "/(.*)",

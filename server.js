@@ -324,7 +324,10 @@ function serveFile(res, filePath) {
   createReadStream(filePath).pipe(res);
 }
 
-// 로컬 실행 시에만 포트를 연다 (Vercel에서는 api/index.js가 handler를 사용)
+// Vercel은 server.js의 기본 export(handler)를 서버 함수로 사용한다
+export default handler;
+
+// 로컬 실행 시에만 포트를 연다
 if (!process.env.VERCEL) {
   http.createServer(handler).listen(PORT, () => {
     console.log(`Moodlist 서버가 포트 ${PORT}에서 실행 중입니다: http://localhost:${PORT}`);
